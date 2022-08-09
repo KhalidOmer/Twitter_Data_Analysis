@@ -21,19 +21,16 @@ class Clean_Tweets:
         drop duplicate rows
         """
         
-        ---
+        self.df = df.drop_duplicates(subset='original_text')
         
-        return df
+        return self.df
     def convert_to_datetime(self, df:pd.DataFrame)->pd.DataFrame:
         """
         convert column to datetime
         """
-        ----
-        
-        ----
-        
+        self.df['created_at'] = pd.to_datetime(df['created_at'], 
+        errors='coerce')
         df = df[df['created_at'] >= '2020-12-31' ]
-        
         return df
     
     def convert_to_numbers(self, df:pd.DataFrame)->pd.DataFrame:
@@ -41,10 +38,9 @@ class Clean_Tweets:
         convert columns like polarity, subjectivity, retweet_count
         favorite_count etc to numbers
         """
-        df['polarity'] = pd.----
+        df['polarity'] = pd.to_numeric(df['polarity'], errors='coerce')
+        self.df['retweet_count'] = pd.to_numeric(df['retweet_count'], errors='coerce')
         
-        ----
-        ----
         
         return df
     
@@ -53,6 +49,17 @@ class Clean_Tweets:
         remove non english tweets from lang
         """
         
-        df = ----
-        
+        df = self.df = df.query("lang == 'en' ")
         return df
+
+if _name_ == "_main_":
+    unclean_data = pd.read_csv("./processed_tweet_data.csv")
+    cleaner = Clean_Tweets(unclean_data)
+    df = cleaner.drop_unwanted_column(cleaner.df)
+    df = cleaner.drop_duplicate(df)
+    df = cleaner.convert_to_numbers(df)
+    df = cleaner.convert_to_datetime(df)
+    df = cleaner.remove_non_english_tweets(df)
+
+    df.to_csv('cleaned_data.csv', index=False)
+    df.to_json('cleaned_data.json')

@@ -36,66 +36,66 @@ class TweetDfExtractor:
 
     # an example function
     def find_statuses_count(self)->list:
-        statuses_count 
+        statuses_count = [i['user']['statuses_count']  if 'user' in i else '' for i in self.tweets_list]
+        return statuses_count 
         
     def find_full_text(self)->list:
-        text = []
-        for i in range(len(tweets_list)):
-            for j in tweet_list[i]:
-                text.append(j["full_text"])
+        text = [i['full_text'] for i in self.tweets_list]
         return text
     
     def find_sentiments(self, text)->list:
-        
-        return polarity, self.subjectivity
+        polarity = []
+        subjectivity = []
+        for tweet in text:
+            blob = TextBlob(tweet)
+            sentiment = blob.sentiment
+            polarity.append(sentiment.polarity)
+            subjectivity.append(sentiment.subjectivity)
+        return polarity, subjectivity
 
     def find_created_time(self)->list:
-        created_at = []
-        for i in range(len(tweets_list)):
-            for j in tweet_list[i]:
-                created_at.append(j["created_at"])
+        created_at = [i['created_at'] for i in self.tweets_list]
         return created_at
 
     def find_source(self)->list:
-        source = 
-
+        source = [i['source'] for i in self.tweets_list]
         return source
 
     def find_screen_name(self)->list:
-        screen_name = 
-
+        screen_name = [i['user']['screen_name'] if 'user' in i else '' for i in self.tweets_list]
+        return screen_name
     def find_followers_count(self)->list:
-        followers_count = 
-
+        followers_count = [i['user']['followers_count'] if 'user' in i else 0 for i in self.tweets_list]
+        return followers_count
     def find_friends_count(self)->list:
-        friends_count = c
-
+        friends_count = [i['user']['friends_count'] if 'user' in i else 0 for i in self.tweets_list]
+        return friends_count
     def is_sensitive(self)->list:
-        try:
-            is_sensitive = [x['possibly_sensitive'] for x in self.tweets_list]
-        except KeyError:
-            is_sensitive = None
-
+        is_sensitive = [i['possibly_sensitive'] if 'possibly_sensitive' in i.keys() else '' for i in self.tweets_list]
         return is_sensitive
 
     def find_favourite_count(self)->list:
+        favourite_count = [i['retweeted_status']['favorite_count'] if 'retweeted_status' in i.keys() else 0 for i in self.tweets_list]
+        return favourite_count
         
-    
     def find_retweet_count(self)->list:
-        retweet_count = 
-
+        retweet_count = [i['retweet_count'] if 'retweet_count' in i.keys() else 0 for i in self.tweets_list]
+        return retweet_count
+        
     def find_hashtags(self)->list:
-        hashtags =
-
+        hashtags = [i['entities']['hashtags'] if 'entities' in i.keys() else '' for i in self.tweets_list]
+        return hashtags
+        
     def find_mentions(self)->list:
-        mentions = 
+        mentions = [i['entities']['user_mentions'] if 'entities' in i.keys() else '' for i in self.tweets_list]
+        return mentions
 
-
+    def find_lang(self)->list:
+        lang = [i['lang'] for i in self.tweets_list]
+        return lang
+        
     def find_location(self)->list:
-        try:
-            location = self.tweets_list['user']['location']
-        except TypeError:
-            location = ''
+        location = [i['user']['location'] if 'user' in i.keys() else '' for i in self.tweets_list]
         
         return location
 
