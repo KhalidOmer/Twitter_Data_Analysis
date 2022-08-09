@@ -62,7 +62,7 @@ class TweetDfExtractor:
         followers_count = 
 
     def find_friends_count(self)->list:
-        friends_count = 
+        friends_count = c
 
     def is_sensitive(self)->list:
         try:
@@ -130,7 +130,7 @@ if __name__ == "__main__":
     # required column to be generated you should be creative and add more features
     columns = ['created_at', 'source', 'original_text','clean_text', 'sentiment','polarity','subjectivity', 'lang', 'favorite_count', 'retweet_count', 
     'original_author', 'screen_count', 'followers_count','friends_count','possibly_sensitive', 'hashtags', 'user_mentions', 'place', 'place_coord_boundaries']
-    _, tweet_list = read_json("../covid19.json")
+    _, tweet_list = read_json("~/Desktop/project1/Twitter_Data_Analysis/data/global_twitter_data.json")
     tweet = TweetDfExtractor(tweet_list)
     tweet_df = tweet.get_tweet_df() 
 
