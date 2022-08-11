@@ -37,7 +37,7 @@ class TweetDfExtractor:
     # an example function
     def find_statuses_count(self)->list:
         statuses_count = [i['user']['statuses_count']  if 'user' in i else '' for i in self.tweets_list]
-        return statuses_count 
+        return statuses_count
         
     def find_full_text(self)->list:
         text = [i['full_text'] for i in self.tweets_list]
@@ -106,7 +106,7 @@ class TweetDfExtractor:
         """required column to be generated you should be creative and add more features"""
         
         columns = ['created_at', 'source', 'original_text','polarity','subjectivity', 'lang', 'favorite_count', 'retweet_count', 
-            'original_author', 'followers_count','friends_count','possibly_sensitive', 'hashtags', 'user_mentions', 'place']
+            'original_author', 'followers_count','friends_count','possibly_sensitive', 'hashtags', 'user_mentions', 'place', 'statuses_count']
         
         created_at = self.find_created_time()
         source = self.find_source()
@@ -122,7 +122,8 @@ class TweetDfExtractor:
         hashtags = self.find_hashtags()
         mentions = self.find_mentions()
         location = self.find_location()
-        data = zip(created_at, source, text, polarity, subjectivity, lang, fav_count, retweet_count, screen_name, follower_count, friends_count, sensitivity, hashtags, mentions, location)
+        statuses_count = self.find_statuses_count()
+        data = zip(created_at, source, text, polarity, subjectivity, lang, fav_count, retweet_count, screen_name, follower_count, friends_count, sensitivity, hashtags, mentions, location, statuses_count)
         df = pd.DataFrame(data=data, columns=columns)
 
         if save:
